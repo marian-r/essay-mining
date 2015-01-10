@@ -27,14 +27,20 @@ addSentWordData <- function(doc) {
   data.frame(SentCount = sentCount, SentLen = sentLen, WordCount = wordCount, WordLen = wordLen)
 }
 
-prepareTextFeatures <- function(rawCorpus) {
+prepareTextFeatures <- function(rawCorpus, corpus) {
   docData = data.frame();
   
   for(i in 1:length(rawCorpus)) {
     print(i)
-    doc = rawCorpus[[i]]
     
-    rowData = addSentWordData(doc)
+    doc = corpus[[i]]
+    tfreq = termFreq(doc)
+    mostUsed = names(which.max(tfreq))
+    
+    rowData = data.frame(MostUsed = mostUsed)
+    
+    doc = rawCorpus[[i]]
+    rowData = cbind(rowData, addSentWordData(doc))
     
     
     docData = rbind(docData, rowData)
