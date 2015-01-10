@@ -11,7 +11,7 @@ annotateWord <- function(string, sentAnnotation) {
 }
 
 
-addSentWordData <- function(docData, i, doc) {
+addSentWordData <- function(doc) {
   sent_ann = annotateSent(doc)
   word_ann = annotateWord(doc, sent_ann)
   word_ann = subset(word_ann, type == "word")
@@ -34,7 +34,7 @@ prepareTextFeatures <- function(rawCorpus) {
     print(i)
     doc = rawCorpus[[i]]
     
-    rowData = addSentWordData(docData, i, doc)
+    rowData = addSentWordData(doc)
     
     
     docData = rbind(docData, rowData)
