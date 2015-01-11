@@ -7,9 +7,10 @@ library(openNLP)
 
 source("corpus-prepare.R")
 source("text/annotations.R")
-source("text-features.R")
 source("text-features-visualization.R")
-source("sentence-structure.R")
+source("text/features.R")
+source("text/sentence-structure.R")
+
 
 fileNames = mixedsort(list.files("data/essay", full.names = TRUE))
 rawCorpus <- Corpus(URISource(fileNames))
