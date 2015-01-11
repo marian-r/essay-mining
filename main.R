@@ -26,6 +26,10 @@ tdm = TermDocumentMatrix(corpus)
 showWordCloud(as.matrix(tdm), 150)
 showClusters(tdm, 0.7)
 
+# Find terms associated with "laugh" with correlation no less than 0.3 (ordered by their correlation with "laugh")
+assoc = findAssocs(tdm, "laugh", 0.3)
+pie(table(assoc), labels = rownames(assoc), col = c("#EDF393", "#F5E665", "#FFC472", "#FFA891", "#89BABE"))
+
 
 sentStructure = prepareSentFeatures(annotations)
 write.table(sentStructure, "data/essay-structure.txt")
