@@ -20,6 +20,24 @@ docData = prepareTextFeatures(annotations, corpus)
 write.table(docData, "data/essay-features.txt", na = "0")
 docData = read.table("data/essay-features.txt")
 
+# show errors in sentence annotation
+barplot(docData$SentLen)
+boxplot(docData$SentLen)
+#rawCorpus[docData$SentLen > 250]
+#content(rawCorpus[docData$SentLen > 250])
+#content(rawCorpus[docData$WordCount / docData$SentLen > 50])
+#rawCorpus[docData$SentLen > 200 & docData$WordCount / docData$SentCount > 50]
+#content(rawCorpus[docData$SentLen > 200 & docData$WordCount / docData$SentCount > 50])
+
+#barplot(docData$WordCount / docData$SentLen)
+#barplot(docData$WordCount / docData$SentCount)
+
+# distribution of sentence count
+hist(docData$SentCount, labels = TRUE)
+
+# word count
+boxplot(docData$WordCount)
+
 
 tdm = TermDocumentMatrix(corpus)
 
