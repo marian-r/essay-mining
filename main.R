@@ -7,8 +7,8 @@ library(openNLP)
 
 source("corpus-prepare.R")
 source("text/annotations.R")
-source("text-features-visualization.R")
 source("text/features.R")
+source("text/features-visualization.R")
 source("text/sentence-structure.R")
 
 
@@ -19,6 +19,13 @@ annotations = annotateCorpus(rawCorpus)
 docData = prepareTextFeatures(annotations, corpus)
 write.table(docData, "data/essay-features.txt", na = "0")
 docData = read.table("data/essay-features.txt")
+
+
+tdm = TermDocumentMatrix(corpus)
+
+showWordCloud(as.matrix(tdm), 150)
+showClusters(tdm, 0.7)
+
 
 sentStructure = prepareSentFeatures(annotations)
 write.table(sentStructure, "data/essay-structure.txt")
