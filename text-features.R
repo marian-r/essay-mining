@@ -2,8 +2,7 @@
 library(plyr)
 
 addSentWordData <- function(ann) {  
-
-  snet_ann = subset(ann, type == "sentence")
+  sent_ann = subset(ann, type == "sentence")
   word_ann = subset(ann, type == "word")
   tag_ann = word_ann
   
