@@ -1,16 +1,8 @@
 
 library(plyr)
 
-annotateString <- function(string) {
-  sent_ann = Maxent_Sent_Token_Annotator()
-  word_ann = Maxent_Word_Token_Annotator() 
-  tag_ann = Maxent_POS_Tag_Annotator() 
-  annotate(string, list(sent_ann, word_ann, tag_ann))
-}
+addSentWordData <- function(ann) {  
 
-addSentWordData <- function(doc) {
-  ann = annotateString(doc)
-  
   snet_ann = subset(ann, type == "sentence")
   word_ann = subset(ann, type == "word")
   tag_ann = word_ann
@@ -32,10 +24,10 @@ addSentWordData <- function(doc) {
   as.data.frame(t(c(vec, tagCountDF)))
 }
 
-prepareTextFeatures <- function(rawCorpus, corpus) {
+prepareTextFeatures <- function(annotations, corpus) {
   docData = data.frame();
   
-  for(i in 1:length(rawCorpus)) {
+  for(i in 1:length(annotations)) {
     print(i)
     
     doc = corpus[[i]]
@@ -44,8 +36,8 @@ prepareTextFeatures <- function(rawCorpus, corpus) {
     
     rowData = data.frame(MostUsed = mostUsed)
     
-    doc = rawCorpus[[i]]
-    rowData = cbind(rowData, addSentWordData(doc))
+    ann = annotations[[i]]
+    rowData = cbind(rowData, addSentWordData(ann))
     
     #print(rowData)
     

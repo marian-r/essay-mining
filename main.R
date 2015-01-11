@@ -12,6 +12,9 @@ source("text-features.R")
 fileNames = mixedsort(list.files("data/essay", full.names = TRUE))
 rawCorpus <- Corpus(URISource(fileNames))
 
-docData = prepareTextFeatures(rawCorpus)
+annotations = annotateCorpus(rawCorpus)
+docData = prepareTextFeatures(annotations, corpus)
+write.table(docData, "data/essay-features.txt", na = "0")
+docData = read.table("data/essay-features.txt")
 
 
