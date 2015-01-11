@@ -1,30 +1,19 @@
 
 library(plyr)
 
-annotateSent <- function(string) {
-  # Generate an annotator which computes sentence annotations 
-  sent_ann <- Maxent_Sent_Token_Annotator()
-  annotate(string, sent_ann)
+annotateString <- function(string) {
+  sent_ann = Maxent_Sent_Token_Annotator()
+  word_ann = Maxent_Word_Token_Annotator() 
+  tag_ann = Maxent_POS_Tag_Annotator() 
+  annotate(string, list(sent_ann, word_ann, tag_ann))
 }
-
-annotateWord <- function(string, sentAnnotation) {
-  word_ann = Maxent_Word_Token_Annotator()
-  annotate(string, word_ann, sentAnnotation)
-}
-
-annotatePOS <- function(string, wordAnnotation) {
-  pos_ann <- Maxent_POS_Tag_Annotator()
-  annotate(string, pos_ann, wordAnnotation)
-}
-
 
 addSentWordData <- function(doc) {
-  sent_ann = annotateSent(doc)
-  word_ann = annotateWord(doc, sent_ann)
-  tag_ann = annotatePOS(doc, word_ann)
+  ann = annotateString(doc)
   
-  word_ann = subset(word_ann, type == "word")
-  tag_ann = subset(tag_ann, type == "word")
+  snet_ann = subset(ann, type == "sentence")
+  word_ann = subset(ann, type == "word")
+  tag_ann = word_ann
   
   sent_ann = as.data.frame(sent_ann)
   word_ann = as.data.frame(word_ann)
