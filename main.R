@@ -1,4 +1,5 @@
 
+library(gtools)
 library(tm)
 library(NLP)
 library(openNLP)
@@ -8,7 +9,8 @@ source("corpus-prepare.R")
 source("text-features-visualization.R")
 source("text-features.R")
 
-rawCorpus <- Corpus(DirSource("data/essay"))
+fileNames = mixedsort(list.files("data/essay", full.names = TRUE))
+rawCorpus <- Corpus(URISource(fileNames))
 
 docData = prepareTextFeatures(rawCorpus)
 
