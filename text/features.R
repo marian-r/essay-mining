@@ -46,3 +46,18 @@ prepareTextFeatures <- function(annotations, corpus) {
   
   docData
 }
+
+getWordStats <- function(dtm) {
+  distinctCount = rowSums(as.matrix(dtm > 0))
+  totalWeight = rowSums(as.matrix(dtm))
+  
+  
+  frequent = removeSparseTerms(dtm, sparse = 0.8)
+  rare = dtm[,!(colnames(dtm) %in% colnames(frequent))]
+  
+  # attributes based on rare words
+  rareCount = rowSums(as.matrix(rare > 0))
+  rareWeight = rowSums(as.matrix(rare))
+  
+  data.frame(DistinctCount = distinctCount, TotalWeight = totalWeight, RareCount = rareCount, RareWeight = rareWeight)
+}

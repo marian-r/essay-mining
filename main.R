@@ -53,3 +53,6 @@ sentStructure = prepareSentFeatures(annotations)
 write.table(sentStructure, "data/essay-structure.txt")
 sentStructure = read.table("data/essay-structure.txt")
 
+
+dtm <- DocumentTermMatrix(corpus, control = list(weighting=weightTfIdf))
+wordStats = getWordStats(dtm)
