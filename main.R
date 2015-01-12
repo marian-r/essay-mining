@@ -65,3 +65,33 @@ wordStats = getWordStats(dtm)
 
 mlDf = prepareForVocabularyML(docData, wordStats)
 
+
+#
+# ML
+#
+
+library(CORElearn)
+library(rpart)
+library(ipred)
+
+sort(attrEval(Grade ~ ., mlDf, "Relief"), decreasing = TRUE)
+sort(attrEval(Grade ~ ., mlDf, "ReliefFequalK"), decreasing = TRUE)
+sort(attrEval(Grade ~ ., mlDf, "MDL"), decreasing = TRUE)
+
+
+# force the predict function to return class labels only (and not the class probabilities...)
+mypredict <- function(object, newdata) { predict(object, newdata, type = "class") }
+# force the CoreModel function to train a model of a given type (specified by the parameter "target.model")
+mymodel.coremodel <- function(formula, data, target.model){CoreModel(formula, data, model=target.model)}
+# force the predict function to return class labels only and also destroy the internal representation of a given model
+mypredict.coremodel <- function(object, newdata) {pred <- predict(object, newdata)$class; destroyModels(object); pred}
+
+# 10-fold cross-validation of decision trees for the complete dataset
+# errorest(formula, data, model (function), predict (function))
+errorest(Grade ~ ., data=mlDf, model = rpart, predict = mypredict)
+
+errorest(Grade ~ ., data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "tree")
+errorest(Grade ~ ., data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "bayes")
+errorest(Grade ~ ., data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "knn")
+errorest(Grade ~ ., data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "rf")
+
