@@ -54,5 +54,14 @@ write.table(sentStructure, "data/essay-structure.txt")
 sentStructure = read.table("data/essay-structure.txt")
 
 
+#
+# prepare for ML
+#
+
+source("ML/prepare.R")
+
 dtm <- DocumentTermMatrix(corpus, control = list(weighting=weightTfIdf))
 wordStats = getWordStats(dtm)
+
+mlDf = prepareForVocabularyML(docData, wordStats)
+
