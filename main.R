@@ -78,6 +78,10 @@ sort(attrEval(Grade ~ ., mlDf, "Relief"), decreasing = TRUE)
 sort(attrEval(Grade ~ ., mlDf, "ReliefFequalK"), decreasing = TRUE)
 sort(attrEval(Grade ~ ., mlDf, "MDL"), decreasing = TRUE)
 
+source("ML//wrapper.R")
+wrapper(mlDf, className="Grade", classModel="tree", folds=10)
+wrapper(mlDf, className="Grade", classModel="knn", folds=5)
+wrapper(mlDf, className="Grade", classModel="rf", folds=5)
 
 # force the predict function to return class labels only (and not the class probabilities...)
 mypredict <- function(object, newdata) { predict(object, newdata, type = "class") }
@@ -89,6 +93,15 @@ mypredict.coremodel <- function(object, newdata) {pred <- predict(object, newdat
 # 10-fold cross-validation of decision trees for the complete dataset
 # errorest(formula, data, model (function), predict (function))
 errorest(Grade ~ ., data=mlDf, model = rpart, predict = mypredict)
+
+
+model = CoreModel(Grade ~ SentCount + RareCount, data = mlDf, model = "tree")
+plot(model, mlDf)
+
+# 10-fold cross validation 
+errorest(Grade ~ SentCount + TotalWeight + RareWeight, data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "tree")
+errorest(Grade ~ DistinctCount + DT + RareCount, data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "knn")
+errorest(Grade ~ RareCount + DistinctCount + WordCount, data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "rf")
 
 errorest(Grade ~ ., data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "tree")
 errorest(Grade ~ ., data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "bayes")
