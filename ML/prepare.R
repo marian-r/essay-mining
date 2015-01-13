@@ -13,6 +13,19 @@ prepareForVocabularyML <- function(docData, wordStats) {
   mlDf
 }
 
+prepareForStructureML <- function(docData, wordStats, sentStructure) {
+  mlDf = getGrades("data//structure.txt")
+  
+  mlDf = cbind(mlDf, docData[, c("SentCount", "WordCount", "DT", "IN", "NN", "JJ")])
+  mlDf = cbind(mlDf, wordStats)
+  mlDf = cbind(mlDf, sentStructure)
+  
+  # get rid of invalidly annotated essays
+  mlDf = mlDf[docData$SentLen < 200,]
+  
+  mlDf
+}
+
 getGrades <- function(filePath) {
   grades = read.table(filePath)
   

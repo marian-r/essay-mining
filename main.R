@@ -64,6 +64,7 @@ dtm <- DocumentTermMatrix(corpus, control = list(weighting=weightTfIdf))
 wordStats = getWordStats(dtm)
 
 mlDf = prepareForVocabularyML(docData, wordStats)
+mlDf = prepareForStructureML(docData, wordStats, sentStructure)
 
 
 #
@@ -107,4 +108,9 @@ errorest(Grade ~ ., data = mlDf, model = mymodel.coremodel, predict = mypredict.
 errorest(Grade ~ ., data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "bayes")
 errorest(Grade ~ ., data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "knn")
 errorest(Grade ~ ., data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "rf")
+
+
+errorest(Grade ~ IN + Verbs + SentCount, data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "tree")
+errorest(Grade ~ SentCount + RareCount + IN + TotalWeight + Adj + WordCount + DT, data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "knn")
+errorest(Grade ~ DistinctCount + WordCount + SentCount + RareCount, data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "rf")
 
