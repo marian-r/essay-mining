@@ -17,6 +17,10 @@ addSentWordData <- function(ann) {
   tagCount = table(unlist(tag_ann$features))
   tagCountDF = as.vector(tagCount)
   names(tagCountDF) = names(tagCount)
+
+  # has no visible impact
+  #adjectives = sum(c(tagCount["JJ"], tagCount["JJR"], tagCount["JJS"]), na.rm = TRUE)
+  #tagCountDF["Adjectives"] = adjectives
   
   vec = c(SentCount = sentCount, SentLen = sentLen, WordCount = wordCount, WordLen = wordLen)
   # convert to row of a data frame

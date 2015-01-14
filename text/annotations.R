@@ -22,3 +22,27 @@ annotateString <- function(string) {
   tag_ann = Maxent_POS_Tag_Annotator() 
   annotate(string, list(sent_ann, word_ann, tag_ann))
 }
+
+# Part of Speech labels
+#
+# NN - Noun
+# NNP - Proper noun
+# NNS - Noun, plural
+# VB - Verb
+# VBD - Verb, past tense
+# VBG - Verb, gerund or present participle
+# VBN - Verb, past participle
+# VBP - Verb, non-3rd person singular present
+# VBZ - Verb, 3rd person singular present 
+# DT - Determiner
+# JJ - Adjective
+# JJR - Adjective, comparative
+# JJS - Adjective, superlative
+# IN - Preposition or subordinating conjunction
+# PRP - Personal pronoun 
+# RB - Adverb
+# RBR - Adverb, comparative
+# RBS - Adverb, superlative 
+# CC - Conjunction
+# CD - Cardinal number
+# ...

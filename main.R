@@ -1,4 +1,7 @@
 
+# we can optionally install models for English language 
+#install.packages("openNLPmodels.en", repos="http://datacube.wu.ac.at/", type="source")
+
 library(gtools)
 library(tm)
 library(NLP)
