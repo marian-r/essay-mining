@@ -10,15 +10,17 @@ source("text/features.R")
 source("text/features-visualization.R")
 source("text/sentence-structure.R")
 
-
+# get files in numerical order
 fileNames = mixedsort(list.files("data/essay", full.names = TRUE))
 rawCorpus <- Corpus(URISource(fileNames))
 
+# annotate - sentences, words, part-of-speech
 annotations = annotateCorpus(rawCorpus)
 
 # process corpus
 source("corpus-prepare.R")
 
+# text features
 docData = prepareTextFeatures(annotations, corpus)
 write.table(docData, "data/essay-features.txt", na = "0")
 docData = read.table("data/essay-features.txt")
@@ -52,6 +54,8 @@ assoc = findAssocs(tdm, "laugh", 0.3)
 pie(table(assoc), labels = rownames(assoc), col = c("#EDF393", "#F5E665", "#FFC472", "#FFA891", "#89BABE"))
 
 
+
+# sentence structure
 sentStructure = prepareSentFeatures(annotations)
 write.table(sentStructure, "data/essay-structure.txt")
 sentStructure = read.table("data/essay-structure.txt")
@@ -94,13 +98,20 @@ mymodel.coremodel <- function(formula, data, target.model){CoreModel(formula, da
 # force the predict function to return class labels only and also destroy the internal representation of a given model
 mypredict.coremodel <- function(object, newdata) {pred <- predict(object, newdata)$class; destroyModels(object); pred}
 
+#
+# decision trees (rpart)
+#
+
 # 10-fold cross-validation of decision trees for the complete dataset
 # errorest(formula, data, model (function), predict (function))
 errorest(Grade ~ ., data=mlDf, model = rpart, predict = mypredict)
 
-
 model = CoreModel(Grade ~ SentCount + RareCount, data = mlDf, model = "tree")
 plot(model, mlDf)
+
+#
+# CORElearn - decision trees, k-NN, random forests
+#
 
 # 10-fold cross validation 
 errorest(Grade ~ SentCount + TotalWeight + RareWeight, data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "tree")
@@ -112,6 +123,10 @@ errorest(Grade ~ ., data = mlDf, model = mymodel.coremodel, predict = mypredict.
 errorest(Grade ~ ., data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "knn")
 errorest(Grade ~ ., data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "rf")
 
+
+#
+# grading based on sentence structure
+#
 
 errorest(Grade ~ IN + Verbs + SentCount, data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "tree")
 errorest(Grade ~ SentCount + RareCount + IN + TotalWeight + Adj + WordCount + DT, data = mlDf, model = mymodel.coremodel, predict = mypredict.coremodel, target.model = "knn")
