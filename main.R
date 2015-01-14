@@ -91,8 +91,30 @@ sort(attrEval(Grade ~ ., mlDf, "MDL"), decreasing = TRUE)
 
 source("ML//wrapper.R")
 wrapper(mlDf, className="Grade", classModel="tree", folds=10)
+#Grade ~ SentCount + RareCount 26.23
+#Grade ~ DT + RareCount + NN + JJ + IN + DistinctCount + SentCount = 26.52
+#Grade ~ SentCount + RareWeight + TotalWeight + NN + IN + RareCount = 26.66
+#Grade ~ SentCount + RareWeight = 26.66
+#Grade ~ SentCount + TotalWeight + RareWeight = 26.81
+# Sentence stucture
+#Grade ~ IN + Verbs + Adj + DT + SentCount + JJ = 34.35
+#Grade ~ WordCount + Verbs + IN = 34.78
+#Grade ~ IN + Verbs + SentCount = 34.20
 wrapper(mlDf, className="Grade", classModel="knn", folds=5)
+#Grade ~ DistinctCount + WordCount + TotalWeight 25.65
+#Grade ~ WordCount + RareCount + DistinctCount + NN + DT = 26.23
+#Grade ~ DistinctCount + DT + RareCount = 25.80
+#Grade ~ RareCount + JJ + DistinctCount + IN = 25.94
+#Grade ~ DistinctCount + TotalWeight + WordCount + DT = 26.23
+# Sentence stucture
+#Grade ~ DistinctCount + DT + WordCount + RareCount + IN + TotalWeight + JJ + Adj + SentCount + NN = 33.91
+#Grade ~ DistinctCount + SentCount + Adj + WordCount + RareCount + DT = 34.49
+#Grade ~ IN + WordCount + RareCount + SentCount + Adj + DT + TotalWeight + NN + Verbs + JJ = 33.48
+#Grade ~ SentCount + RareCount + IN + TotalWeight + Adj + WordCount + DT = 33.62
 wrapper(mlDf, className="Grade", classModel="rf", folds=5)
+#Grade ~ RareCount + DistinctCount + WordCount = 25.51
+# Sentence stucture
+#Grade ~ DistinctCount + WordCount + SentCount + RareCount = 34.78
 
 # force the predict function to return class labels only (and not the class probabilities...)
 mypredict <- function(object, newdata) { predict(object, newdata, type = "class") }
