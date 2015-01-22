@@ -25,8 +25,8 @@ Used models:
 
 ###Grading of essays based on vocabulary
 
-
+Best accuracy: **74.50%**
 
 ###Grading of essays based on sentence structure
 
-
+Best accuracy: **66,38%**
