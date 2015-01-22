@@ -2,6 +2,10 @@
 Essay mining
 ============
 
+Data set of 723 English essays.
+
+![Word Cloud](https://raw.githubusercontent.com/marian-r/essay-mining/4e388f26ba75746f40d241de3ad9e86f786d3d47/img/wordcloud.png)
+
 Text Mining
 -----------
 
